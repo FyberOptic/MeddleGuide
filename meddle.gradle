@@ -34,6 +34,7 @@ project.extensions.add("greddle", GreddlePluginExtension)
 
 class MeddlePluginExtension {
     String version
+    String location = null
 }
 
 class GreddlePluginExtension {
@@ -68,9 +69,26 @@ afterEvaluate {
     println 'Using MeddleAPI v' + project.meddleapi.version
     println ''
     
-    dependencies { compile group: "net.fybertech", name: "meddle", version: "${project.meddle.version}" }
-    dependencies { compile group: "net.fybertech", name: "dynamicmappings", version: "${project.dynamicmappings.version}" }
-    dependencies { compile group: "net.fybertech", name: "meddleapi", version: "${project.meddleapi.version}" }
+    if (project.meddle.location == null) {
+        dependencies { compile group: "net.fybertech", name: "meddle", version: "${project.meddle.version}" }
+    }
+    else {
+        dependencies { compile files(project.meddle.location) }
+    }
+    
+    if (project.dynamicmappings.location == null) {
+        dependencies { compile group: "net.fybertech", name: "dynamicmappings", version: "${project.dynamicmappings.version}" }
+    }
+    else {
+        dependencies { compile files(project.dynamicmappings.location) }
+    }
+    
+    if (project.meddleapi.location == null) {
+        dependencies { compile group: "net.fybertech", name: "meddleapi", version: "${project.meddleapi.version}" }
+    }
+    else {
+        dependencies { compile files(project.meddleapi.location) }
+    }
 
     dependencies { runtime files(new File("${->project.greddle.cacheDir}", "${->project.ext.mcJarFilename}")) }
     dependencies { provided files(new File("${->project.greddle.cacheDir}", "${->project.ext.remappedJarFilename}")) }
@@ -115,18 +133,24 @@ task remapMinecraft(type: JavaExec, dependsOn: 'getMinecraft') {
             else if (it.name.equals('dynamicmappings')) classpath it.getFile()
             else if (it.name.equals('meddleapi')) classpath it.getFile()
         }
+        
+        if (project.meddle.location != null) classpath project.meddle.location
+        if (project.meddleapi.location != null) classpath project.meddleapi.location
+        if (project.dynamicmappings.location != null) classpath project.dynamicmappings.location
 
         classpath fileTree(new File("${->project.greddle.cacheDir}", 'libraries/'))
+        
+        args = ['-o', "${->project.greddle.cacheDir}/${->project.remappedJarFilename}"]
     }
     classpath sourceSets.main.resources.getSrcDirs()
     main = 'net.fybertech.dynamicmappings.DynamicRemap'
 
-    doLast {
+    /*doLast {
         // Do all this until DynamicRemap accepts a destination jar
         Path dest = (new File("${->project.greddle.cacheDir}", "${->project.remappedJarFilename}")).toPath()
         println "Moving mapped jar to " + dest
         Files.move(Paths.get('mcremapped.jar'), dest, StandardCopyOption.REPLACE_EXISTING);
-    }
+    }*/
 
     inputs.file { files(new File("${->project.greddle.cacheDir}", "${->project.mcJarFilename}")) }
     outputs.file { files(new File("${->project.greddle.cacheDir}", "${->project.remappedJarFilename}")) }

@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ContainerChest;
+import net.minecraft.inventory.EnumContainerAction;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -292,13 +293,13 @@ public class ContainerGuide extends ContainerChest
 	
 	
 	@Override
-	public ItemStack slotClick(int id, int button, int mode, EntityPlayer player) 
+	public ItemStack slotClick(int id, int button, EnumContainerAction mode, EntityPlayer player) 
 	{
 		int col = id % 9;
 		int row = id / 9;
 		
-		if (button == 0 && mode == 0) onClickedGrid(col, row, button, player);		
-		else if (mode != 0) {
+		if (button == 0 && mode.ordinal() == 0) onClickedGrid(col, row, button, player);		
+		else if (mode.ordinal() != 0) {
 			// TODO - Handle more efficiently than sending entire inventory
 			for (int n = 0; n < this.inventorySlots.size(); n++) {
 				for (ICrafting crafter : this.crafters) {

@@ -12,20 +12,20 @@ meddle {
 }
 
 dynamicmappings {
-    version = "014"
+    version = "018"
 }
 
 meddleapi {
-    version = "1.0.4"
+    version = "1.0.5"
 }
 
 minecraft {
-    version = '15w41b'
+    version = '15w44a'
 }
 
 jar {
     baseName = 'meddleguide'
-    version = '1.0'
+    version = '1.0.1'
     
     manifest {
 		attributes('MeddleAPI-Mods' : 'net.fybertech.meddleguide.MeddleGuideMod')
