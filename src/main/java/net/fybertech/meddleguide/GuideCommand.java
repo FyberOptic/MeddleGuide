@@ -21,7 +21,7 @@ public class GuideCommand implements ICommand
 	
 	@Override
 	public List<String> addTabCompletionOptions(MinecraftServer arg0, ICommandSender arg1, String[] arg2, BlockPos arg3) {
-		return null;
+		return Collections.emptyList();
 	}
 
 	
@@ -59,11 +59,9 @@ public class GuideCommand implements ICommand
 	@Override
 	public void processCommand(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException 
 	{
-		//System.out.println("USING");
-		
 		if (sender.getCommandSenderEntity() instanceof EntityPlayer) {			
 			((EntityPlayer)sender).displayGUIChest(new InventoryGuide("Recipe Guide", true, 9 * 6, args));			
-		}		
+		}
 	}
 	
 }

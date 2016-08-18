@@ -4,7 +4,7 @@ import net.fybertech.meddle.MeddleMod;
 import net.fybertech.meddleapi.MeddleAPI;
 
 
-@MeddleMod(id="meddleguide", name="Meddle Guide", version="1.0.1", author="FyberOptic")
+@MeddleMod(id="meddleguide", name="Meddle Guide", version="1.0.2", author="FyberOptic")
 public class MeddleGuideMod
 {	
 	public void init()

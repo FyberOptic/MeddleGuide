@@ -69,9 +69,9 @@ public class ContainerGuide extends ContainerChest
 	
 	private ItemStack fixItemStack(ItemStack stack)
 	{
-		if (stack == null) return null;
+		if (stack == null || stack == ItemStack.NULL_STACK) return ItemStack.NULL_STACK;
 		else if ((stack.getItem() instanceof ItemBlock) && stack.getMetadata() == 32767) return new ItemStack(stack.getItem());
-		else if (stack.stackSize > 1) return new ItemStack(stack.getItem(), 1, stack.getItemDamage());
+		else if (stack.getStackSize() > 1) return new ItemStack(stack.getItem(), 1, stack.getItemDamage());
 		else return stack;
 	}
 	
@@ -108,13 +108,13 @@ public class ContainerGuide extends ContainerChest
 			{
 				ShapedRecipes shaped = (ShapedRecipes)handler;
 				ItemStack[] grid = new ItemStack[9];
+				for (int n = 0; n < 9; n++) grid[n] = ItemStack.NULL_STACK;
 				
 				//System.out.println("Output: " + shaped.recipeOutput.getDisplayName());
 				for (int y = 0; y < 3; y++)	{
 					if (y >= shaped.recipeHeight) break;					
 					for (int x = 0; x < 3; x++) {
 						if (x >= shaped.recipeWidth) break;
-						//System.out.println(shaped.recipeItems[x + (y * shaped.recipeWidth)]);
 						grid[x + (y * 3)] = fixItemStack(shaped.recipeItems[x + (y * shaped.recipeWidth)]);
 					}
 				}
@@ -128,6 +128,8 @@ public class ContainerGuide extends ContainerChest
 				ShapelessRecipes shapeless = (ShapelessRecipes)handler;
 				
 				ItemStack[] grid = new ItemStack[9];
+				for (int n = 0; n < 9; n++) grid[n] = ItemStack.NULL_STACK;
+				
 				int size = shapeless.recipeItems.size();
 				if (size > 9) size = 9;
 				for (int n = 0; n < size; n++) {
@@ -167,7 +169,7 @@ public class ContainerGuide extends ContainerChest
 		if (xPos > scroll[0].length()) xPos = 0;
 		
 		for (int n = 0; n < 9 * 6; n++) {
-			super.putStackInSlot(n, null);
+			super.putStackInSlot(n, ItemStack.NULL_STACK);
 		}
 		
 		for (int y = 0; y < 5; y++) {
@@ -186,7 +188,7 @@ public class ContainerGuide extends ContainerChest
 	public void updateScreen()
 	{
 		for (int n = 0; n < 9 * 6; n++) {
-			super.putStackInSlot(n, null);
+			super.putStackInSlot(n, ItemStack.NULL_STACK);
 		}
 		
 		switch (screenNum)
@@ -215,7 +217,7 @@ public class ContainerGuide extends ContainerChest
 				
 				for (int y = 0; y < 3; y++) {
 					for (int x = 0; x < 3; x++) {
-						super.putStackInSlot((x+3) + ((y+1) * 9), holder.grid[x + (y * 3)]);						
+						super.putStackInSlot((x+3) + ((y+1) * 9), holder.grid[x + (y * 3)]);
 					}
 				}
 				
@@ -309,7 +311,7 @@ public class ContainerGuide extends ContainerChest
 		}		
 		
 		//System.out.println("SLOT CLICK: " + col + " " + id + " " + button + " " + mode + " " + player);
-		return null;
+		return ItemStack.NULL_STACK;
 	}
 	
 

@@ -145,13 +145,6 @@ task remapMinecraft(type: JavaExec, dependsOn: 'getMinecraft') {
     classpath sourceSets.main.resources.getSrcDirs()
     main = 'net.fybertech.dynamicmappings.DynamicRemap'
 
-    /*doLast {
-        // Do all this until DynamicRemap accepts a destination jar
-        Path dest = (new File("${->project.greddle.cacheDir}", "${->project.remappedJarFilename}")).toPath()
-        println "Moving mapped jar to " + dest
-        Files.move(Paths.get('mcremapped.jar'), dest, StandardCopyOption.REPLACE_EXISTING);
-    }*/
-
     inputs.file { files(new File("${->project.greddle.cacheDir}", "${->project.mcJarFilename}")) }
     outputs.file { files(new File("${->project.greddle.cacheDir}", "${->project.remappedJarFilename}")) }
 }
